@@ -1,0 +1,65 @@
+{% set site_url = url('index')|trim('/') %}
+<!doctype html>
+
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{% block title %} {% block page_title '' %} | {% block site_title 'HomEat' %} {% endblock %}</title>
+    {% block stylesheets '' %}
+</head>
+<body>
+
+
+
+{#             ONGLETS & MENU             #}
+
+{# Menu #}
+{{ render(controller('App\\Controller\\IndexController::menu')) }}
+
+{# Onglets #}
+{{ render(controller('App\\Controller\\IndexController::onglets')) }}
+
+{# Header_NAV #}
+{{ render(controller('App\\Controller\\IndexController::header')) }}
+
+
+
+
+<main>
+
+    {% block body '' %}
+
+
+
+
+
+
+    {#                SLIDEBAR                  #}
+
+
+</main>
+
+{# Sidebar #}
+{{ render(controller('App\\Controller\\IndexController::sidebar')) }}
+
+{#  NavBarr #}
+{{ render(controller('App\\Controller\\IndexController::navbar')) }}
+
+
+
+
+
+
+{% block javascripts '' %}
+
+
+
+
+
+
+
+</body>
+</html>

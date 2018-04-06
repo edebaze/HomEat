@@ -1,0 +1,133 @@
+@import url('https://fonts.googleapis.com/css?family=Amatic+SC');
+@import url('https://fonts.googleapis.com/css?family=Josefin+Sans');
+@import url('https://fonts.googleapis.com/css?family=Josefin+Sans');
+main .container {
+    background-color: white;
+    border-radius: 10px;
+    padding: 10px;
+    width: 100%;
+    margin-top: 0px;
+    padding-top: -5px;
+}
+main h5 {
+    text-align: center;
+    letter-spacing: 3px;
+    font-family: 'Amatic SC', cursive;
+
+}
+
+
+main h1 {
+    text-align: center;
+    letter-spacing: 3px;
+    font-family: 'Amatic SC', cursive;
+
+}
+main p {
+    font-size: 20px;
+    font-family: 'Josefin Sans', sans-serif;
+
+    text-align: justify;
+    border-radius: 10px;
+}
+
+.parallax{
+
+    background-image: url("http://blog.slate.fr/wp-includes/ms-files.php?blog=sagalovitsch&file=2016/04/couscous-tunisien-chebtiya-1.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+}
+main h2 {
+    text-align: center;
+    letter-spacing: 3px;
+    font-family: 'Poppins', sans-serif;
+
+}
+/*--------------------------------- Profil des participant -------------------- */
+#creat {
+    padding-bottom: 5%;
+    padding-top: 5%;
+}
+#profilH {
+    padding-top: 5%;
+    background-image: linear-gradient(97.2612346702706deg, rgba(255, 167, 2, 0.51) 6.087890625%,rgba(255, 255, 255,1) 93.35351562499999%);
+    padding-bottom: 5%;
+
+
+
+
+}
+#profilE {
+    padding-top: 5%;
+    padding-bottom: 5%;
+    background-image: linear-gradient(89.64108819815056deg, rgba(255, 255, 255,1) -0.4863281249999858%, rgb(255, 255, 255) 90.841796875%);
+}
+#profilL {
+    padding-top: 5%;
+    padding-bottom: 5%;
+    background-image: linear-gradient(89.64108819815056deg, rgba(255, 255, 255,1) -0.4863281249999858%, rgb(255, 255, 255) 90.841796875%);
+
+}
+#profilJ {
+    padding-top: 5%;
+    padding-bottom: 5%;
+    background-image: linear-gradient(97.2612346702706deg, rgba(255, 167, 2, 0.51) 6.087890625%,rgba(255, 255, 255,1) 93.35351562499999%);
+
+}
+#profilET {
+    padding-top: 5%;
+    padding-bottom: 5%;
+    background-image: linear-gradient(97.2612346702706deg, rgba(255, 167, 2, 0.51) 6.087890625%,rgba(255, 255, 255,1) 93.35351562499999%);
+
+}
+
+main h4 {
+    text-align: center;
+    font-family: 'Josefin Sans', sans-serif;
+}
+#photoH {
+    height: 300px;
+    width: 300px;
+    background-image: url("https://scontent-cdt1-1.xx.fbcdn.net/v/t1.0-9/23316463_1712193552126059_856176954662553339_n.jpg?_nc_cat=0&oh=ad0e8421a1980315467ea29065ee07b2&oe=5B3ADCC8");
+    background-position: center;
+    background-size: cover;
+    border-radius: 2%;
+}
+#photoE {
+    height: 300px;
+    width: 300px;
+    background-image: url("https://scontent-cdt1-1.xx.fbcdn.net/v/t1.0-9/23032857_10212783242248536_4978237004265261035_n.jpg?_nc_cat=0&oh=8920967c78488ddd0e5f899148c0cb39&oe=5B74E035");
+    background-position: center;
+    background-size: cover;
+    border-radius: 2%;
+}
+#photoL {
+    height: 300px;
+    width: 300px;
+    background-image: url("https://avatars3.githubusercontent.com/u/32874458?s=460&v=4");
+    background-position: center;
+    background-size: cover;
+    border-radius: 2%;
+}
+#photoET {
+    height: 300px;
+    width: 300px;
+    background-image: url("https://i.imgur.com/hwr2ceN.jpg");
+    background-position: center;
+    background-size: cover;
+    border-radius: 2%;
+}
+#photoJ {
+    height: 300px;
+    width: 300px;
+    background-image: url("https://i.imgur.com/J4fIqFP.jpg");
+    border-radius: 2%;
+    background-size: cover;
+}
+h6 {
+    font-family: 'Amatic SC', cursive;
+    text-align: center;
+    font-size: xx-large;
+}

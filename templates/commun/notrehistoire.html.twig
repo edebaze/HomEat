@@ -1,0 +1,129 @@
+{% extends "layout.html.twig" %}
+
+
+{% block page_title %}
+    EDITEUR DE RECETTE
+{% endblock %}
+
+{% block content %}
+
+
+
+    {#          ---------------------------------------------             #}
+
+<div class="parallax" style="width: 100%; height: 200px">
+
+</div>
+
+<div class="section white">
+    <div class="row container"id="container">
+        <h1> Notre Histoire</h1>
+        <h5>Salut moi c'est Sam !</h5>
+        <p>L'histoire de HomEat a commencée un lundi soir...</p>
+        <p> Après une longue journée de cours, affalé sur mon canapé devant Netflix, est venu
+            le moment de se poser LA  question du soir, que vais-je manger ???</p>
+        <p>Pâtes, Macdo ou kébab ? Quand soudain une merveilleuse odeur de Rizotto envahit l'appartement.
+            2 options s'offrent à moi. La première : me lever du canapé et entamer une longue discussion téléphonique avec ma mère pour apprendre les bases de la cuisine en un temps record.</p>
+        <p>OU : Trouver un prétexte pour sonner chez mon ou ma voisine, passionnée d'émissions de cuisine. Qui depuis mon arrivée dans l'immeuble me rappel tous les soirs que je suis flemmard et fauché, lui sous entendre discrètement
+            que son plat me donne drôlement envie et finir par rentrer chez moi dépité et me résoudre à manger des pâtes.
+            C'est à ce moment précis que l'idée de HomEat m'est venu à l'esprit.</p>
+        <h2>Vous l'aurez compris, Sam c'est un peu nous tous !  <h2/>
+
+    </div>
+</div>
+<div class="parallax-container"  style="width: 100%; height: 200px">
+    <div class="parallax"></div>
+</div>
+
+
+
+
+
+
+
+
+
+<h1 id="creat"> Les créateurs du projet </h1>
+
+
+<div class="row">
+    <div class="col s12" id="profilH" >
+        <div class="col s4 z-depth-5" id="photoH">
+
+        </div>
+
+        <h4> Hedi Mokrani</h4>
+        <h6>King of CSS</h6>
+        <p></p>
+    </div>
+    <div class="col s12" id="profilE">
+        <div class="col s4 z-depth-5" id="photoE">
+
+        </div>
+
+        <h4>Emilie Follin</h4>
+        <h6>Queen of API</h6>
+
+        <p></p>
+    </div>
+    <div class="col s12" id="profilJ">
+        <div class="col s4 z-depth-5" id="photoJ">
+
+        </div>
+
+        <h4>Jérôme Ballue</h4>
+        <h6>Prince of  CSS</h6>
+    </div>
+    <div class="col s12" id="profilL">
+        <div class="col s4 z-depth-5" id="photoL">
+
+        </div>
+
+        <h4>Lou Lemarié</h4>
+        <h6>Queen of BDD</h6>
+    </div>
+
+
+
+    <div class="col s12" id="profilET">
+        <div class="col s4 z-depth-5" id="photoET">
+        </div>
+
+        <h4>Etienne De Bazelaire de Ruppierre</h4>
+        <h6>King of Back</h6>
+    </div>
+
+</div>
+
+    <div class="section white">
+        <div class="row container"id="container">
+
+
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/css/dropify.min.css" integrity="sha256-AWdeVMUYtwLH09F6ZHxNgvJI37p+te8hJuSMo44NVm0=" crossorigin="anonymous" />
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="//cdn.ckeditor.com/4.8.0/full/ckeditor.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/js/dropify.min.js" integrity="sha256-SUaao5Q7ifr2twwET0iyXVy0OVnuFJhGVi5E/dqEiLU=" crossorigin="anonymous"></script>
+    <script>
+        CKEDITOR.replace('form_contenu')
+        $('.dropify').dropify({
+            messages: {
+                default: 'Glissez-d&eacute;posez un fichier ici ou cliquez',
+                replace: 'Glissez-d&eacute;posez un fichier ou cliquez pour remplacer',
+                remove:  'Supprimer',
+                error:   'D&eacute;sol&eacute;, le fichier est trop volumineux'
+            }
+        });
+    </script>
+{% endblock %}
+

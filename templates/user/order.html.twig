@@ -1,0 +1,134 @@
+
+
+{% extends "layout.html.twig" %}
+
+
+{% block page_title %}
+    MA COMMANDE
+{% endblock %}
+
+{% block content %}
+
+
+
+                {#          ---------------------------------------------             #}
+
+
+
+                                        {#       CONTENU       #}
+
+
+    {% set address = address[0].address %}
+    {% set price = order.recipes.price * order.quantities %}
+
+    <div class="row">
+        <div class="container">
+
+            <div class=" col s12 m12 z-depth-3" style="background-color: white; margin: 50px 0 50px 0;">
+
+
+
+                <div class="col s12" style="padding-bottom: 40px;">
+
+                    <div class="row valign-wrapper">
+
+                        <div class="col s4 z-depth-1" style="height: 200px; width: 200px; background-image: url('{{ asset(order.recipes.image) }}');
+                        background-position: center;
+                        background-size: cover;
+                        margin: 35px;">
+                        </div>
+
+                        <h5 class="col s6">Votre commande à emporter</h5>
+                        <a href="{{ url('index') }}" class="waves-effect waves-light btn-large z-depth-3" style="margin: 30px"><i class="material-icons">home</i></a>
+
+                    </div>
+
+                    <div class="row valign-wrapper center-align">
+
+                        <div class="col s6" style="text-align: center">
+                            <div  style="background-color: rgba(176,176,176,0.16)">
+                                <div class="row center">
+                                    <div class="col s12"> <strong><p>Quantité : {{ order.quantities }} parts</p></strong></div>
+                                </div>
+
+                            </div>
+
+                            <div  style="background-color: rgba(176,176,176,0.16)">
+                                <div class="row center">
+                                    <div class="col s12"> <strong><p>Adresse : {{ address.number }}  {{ address.street }},  {{ address.city }}  </p></strong></div>
+                                </div>
+
+                            </div>
+
+
+                            <div  style="background-color: rgba(176,176,176,0.16)">
+                                <div class="row center">
+                                    <div class="col s12"> <strong><p>Vous pouvez récuperer les plats à partir de {{ order.recipes.hour | date('H:i') }}</p></strong></div>
+                                </div>
+
+                            </div>
+
+
+                            <hr>
+
+                            <div  style="background-color: rgba(176,176,176,0.16)">
+                                <div class="row center">
+                                    <div class="col s12"> <strong><p>Prix : {{ order.recipes.price }}€ X {{ order.quantities }} part(s)</p></strong></div>
+                                </div>
+
+                            </div>
+
+
+
+
+                            <div  style="background-color: #ffa702">
+                                <div class="row center">
+                                    <div class="col s12"> <strong><p>Total de la commande : {{ price }} €</p></strong></div>
+                                </div>
+
+                            </div>
+
+
+
+                        </div>
+
+                        <div class="col s6 valign-center center-align">
+
+
+
+
+                            <div id="paypal-button-container"></div>
+
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+
+
+
+        </div>
+    </div>
+
+
+
+
+                                {#       END CONTENU       #}
+
+
+
+
+                {#        ---------------------------------------------           #}
+
+
+
+
+
+{% endblock %}

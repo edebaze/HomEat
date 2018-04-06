@@ -1,0 +1,92 @@
+{% extends "layout.html.twig" %}
+
+
+{% block page_title %}
+    Address ADD
+{% endblock %}
+
+{% block content %}
+
+
+
+                        {#          ---------------------------------------------             #}
+
+                                            {#       FORMULAIRE       #}
+
+
+
+    {#       FORMULAIRE       #}
+    <div class="container" id="container-editor">
+        <div class="row">
+            <div class="col s12 z-depth-3"  id="formulaire-editor">
+                <div class="col s12" id="titre-editor">
+                    <h1>Mon Adresse</h1>
+                </div>
+                <form class="well" method="POST" action="add-address"
+                      enctype="multipart/form-data" style="margin: 40px">
+
+                    {# Titre de la recette #}
+                    <div class="row">
+                        <div class="input-field col s12">
+                            {{ form_row(form.street) }}
+                        </div>
+                    </div>
+
+                    {# Description de la recette #}
+                    <div class="materialize-textarea">
+                        <div class="">
+                            {{ form_row(form.zip_code) }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="input-field col s4">
+                                {{ form_row(form.city) }}
+                            </div>
+                         </div>
+
+                    </div>
+
+                    {# Featured Image (File) #}
+                    <div class="file-field input-field">
+                        <div class="col-md-10">
+                            {{ form_row(form.number) }}
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <div class="col-md-10">
+                           {{ form_row(form.comment) }}
+                        </div>
+                    </div>
+
+
+
+
+                    {# Submit #}
+                    <div class="form-group">
+                        <div class="col-xs-7 col-xs-offset-3">
+                            {{ form_row(form.save) }}
+
+                        </div>
+                    </div>
+
+
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+                                             {#       END FORMULAIRE       #}
+
+                            {#        ---------------------------------------------           #}
+
+
+
+
+
+{% endblock %}

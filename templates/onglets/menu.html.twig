@@ -1,0 +1,55 @@
+
+
+{% block menu %}
+
+    <div id="modal1" class="modal bottom-sheet">
+        <div class="modal-content">
+            <h4>Défis</h4>
+            <ul class="collection">
+            <div class="row">
+                {% for chall in challenges %}
+
+                    <div class="col s12">
+                        <li class="collection-item avatar challenge-container valign-wrapper">
+                            <div class="col s2">
+                                <img src="{{ asset(chall.challenge.image) }}" alt="" class="challenge-recompense">
+                            </div>
+                            <div class="col s2">
+
+                                <span class="challenge-titre">{{ chall.challenge.name }}</span>
+                            </div>
+
+                            <div style="width: 100%; height: 40px; background-color: #e2e2e2; border-radius : 5px;">
+                                {% if chall.accomplissement > 0 %}
+                                    <div class="challenge-description-container" style="width: {{ chall.accomplissement * 100 }}%; overflow: hidden;"></div>
+                                {% else %}
+                                    <div style="width: {{ chall.accomplissement * 100 }}%; height: 40px; overflow: hidden;"></div>
+                                {% endif %}
+
+                                <span class="challenge-description" style="position: absolute;">{{ chall.challenge.description}} </span>
+
+                            </div>
+
+                                    <div class="col s3">
+
+                                        <span class="challenge-avancement"><span class="avancement">{{ chall.accomplissement * 100 }} % </span></span>
+
+                                    </div>
+
+                                    <div class="col s1">
+                                        {% if chall.accomplissement < 1.0 %}
+                                            <a href="{{ url('challenge', {id : chall.challenge.id}) }}" class="challenge-btn waves-effect waves-light btn secondary-content" disabled="disabled">Valider</a>
+                                        {% else %}
+                                            <a href="{{ url('challenge', {id : chall.challenge.id}) }}" class="challenge-btn waves-effect waves-light btn secondary-content">Valider</a>
+                                        {% endif %}
+
+                                    </div>
+                        </li>
+                    </div>
+                {% endfor %}
+            </div>
+            </ul>
+        </div>
+    </div>
+
+{% endblock %}

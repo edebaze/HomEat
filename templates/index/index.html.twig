@@ -1,0 +1,49 @@
+{% extends "layout.html.twig" %}
+
+
+{% block page_title %}
+    Accueil
+{% endblock %}
+
+{% block content %}
+
+
+                {#       --------------------------------------------------------      #}
+
+
+                            {#         CONTENU PRINCIPAL DE L'INDEX        #}
+
+
+
+    {# Header_NAV #}
+    {{ render(controller('App\\Controller\\IndexController::filtreAccueil')) }}
+
+    <div class="index-container">
+
+
+                    {#         NOTIFICATIONS ET SUGGESTIONS       #}
+
+        <div class="index-notifications">
+            {#{{ message | raw }}#}
+        </div>
+
+        <h1>Voici la liste des plats disponible près de chez vous</h1>
+                    {#                CONTENU                 #}
+
+        {{ render(controller('App\\Controller\\IndexController::plats')) }}
+
+
+
+    </div>
+
+
+                            {#       END CONTENU PRINCIPAL DE L'INDEX      #}
+
+
+                {#       --------------------------------------------------------      #}
+
+
+
+
+
+    {% endblock %}
