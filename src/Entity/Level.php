@@ -5,9 +5,9 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\RolesRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\LevelRepository")
  */
-class Roles
+class Level
 {
     /**
      * @ORM\Id()
@@ -17,10 +17,9 @@ class Roles
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=150)
+     * @ORM\Column(type="integer")
      */
-    private $name;
-
+    private $xp;
 
 
 
@@ -29,24 +28,27 @@ class Roles
 
 
 
-    /**
-     * @return mixed
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param mixed $name
-     */
-    public function setName($name): void
-    {
-        $this->name = $name;
-    }
-
     public function getId()
     {
         return $this->id;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getXp()
+    {
+        return $this->xp;
+    }
+
+    /**
+     * @param mixed $xp
+     */
+    public function setXp($xp): void
+    {
+        $this->xp = $xp;
+    }
+
+
+
 }

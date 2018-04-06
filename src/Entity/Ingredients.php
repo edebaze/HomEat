@@ -33,10 +33,21 @@ class Ingredients
     private $allergenes;
 
 
+
+
+
     public function __construct()
     {
         $this->categories_ingredients = new ArrayCollection();
     }
+
+
+
+
+
+    // ------------------------------------------------- GETTERS & SETTERS
+
+
 
     public function addCategoryIngredient (CategoryIngredient $CategoryIngredient)
     {

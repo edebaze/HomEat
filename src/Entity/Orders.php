@@ -38,6 +38,35 @@ class Orders
      */
     private $quantities;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $cancel;
+
+    /**
+     * @return mixed
+     */
+    public function getCancel()
+    {
+        return $this->cancel;
+    }
+
+    /**
+     * @param mixed $cancel
+     */
+    public function setCancel($cancel): void
+    {
+        $this->cancel = $cancel;
+    }
+
+
+
+
+
+    // ------------------------------------------------- GETTERS & SETTERS
+
+
+
 
     /**
      * @return mixed

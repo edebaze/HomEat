@@ -17,9 +17,20 @@ class Address
     private $id;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\AddressHasUser",  mappedBy="address")
+     * @ORM\Column(type="float", precision=6)
      */
-    private $addressHasUser;
+    private $lat;
+
+
+    /**
+     * @ORM\Column(type="float", precision=6)
+     */
+    private $lng;
+
+    /**
+     * @ORM\Column(type="string", length=50)
+     */
+    private $ip;
 
 
     /**
@@ -46,26 +57,6 @@ class Address
      * @ORM\Column(type="integer")
      */
     private $number;
-
-
-
-    /**
-     * @return mixed
-     */
-    public function getAddressHasUser()
-    {
-        return $this->addressHasUser;
-    }
-
-    /**
-     * @param mixed $addressHasUser
-     */
-    public function setaddressHasUser(addressHasUser $addressHasUser)
-    {
-        $this->addressHasUser = $addressHasUser;
-
-        return $this;
-    }
 
 
     /**
@@ -155,4 +146,54 @@ class Address
     {
         return $this->id;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getLat()
+    {
+        return $this->lat;
+    }
+
+    /**
+     * @param mixed $lat
+     */
+    public function setLat($lat): void
+    {
+        $this->lat = $lat;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLng()
+    {
+        return $this->lng;
+    }
+
+    /**
+     * @param mixed $lng
+     */
+    public function setLng($lng): void
+    {
+        $this->lng = $lng;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIp()
+    {
+        return $this->ip;
+    }
+
+    /**
+     * @param mixed $ip
+     */
+    public function setIp($ip): void
+    {
+        $this->ip = $ip;
+    }
+
+
 }

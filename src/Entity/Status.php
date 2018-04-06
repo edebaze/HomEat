@@ -19,7 +19,7 @@ class Status
     /**
      * @ORM\Column(type="string", length=150)
      */
-    private $names_status;
+    private $name;
 
 
     /**
@@ -27,10 +27,13 @@ class Status
      */
     private $orders;
 
-    /**
-     * @ORM\Column(type="text", length=300)
-     */
-    private $descriptions_status;
+
+
+
+
+    // ------------------------------------------------- GETTERS & SETTERS
+
+
 
     /**
      * @return mixed
@@ -41,44 +44,21 @@ class Status
     }
 
     /**
-     * @param mixed $orders
-     */
-    public function setOrders (Orders $Orders)
-    {
-        $this->Orders = $Orders;
-        return $this;
-    }
-    /**
      * @return mixed
      */
-    public function getNamesStatus()
+    public function getName()
     {
-        return $this->names_status;
+        return $this->name;
     }
 
     /**
-     * @param mixed $names_status
+     * @param mixed $names
      */
-    public function setNamesStatus($names_status): void
+    public function setName($name): void
     {
-        $this->names_status = $names_status;
+        $this->name = $name;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getDescriptionsStatus()
-    {
-        return $this->descriptions_status;
-    }
-
-    /**
-     * @param mixed $descriptions_status
-     */
-    public function setDescriptionsStatus($descriptions_status): void
-    {
-        $this->descriptions_status = $descriptions_status;
-    }
 
     public function getId()
     {

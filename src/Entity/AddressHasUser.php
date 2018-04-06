@@ -22,14 +22,21 @@ class AddressHasUser
     private $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Address",  inversedBy="addressHasUser")
+     * @ORM\Column(type="boolean")
+     */
+    private $principale;
+
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Address",  cascade={"persist"})
      */
     private $address;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="addressHasUser")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", cascade={"persist"})
      */
     private $user;
+
 
 
 
@@ -47,6 +54,22 @@ class AddressHasUser
     public function setName($name): void
     {
         $this->name = $name;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPrincipale()
+    {
+        return $this->principale;
+    }
+
+    /**
+     * @param mixed $principale
+     */
+    public function setPrincipale($principale): void
+    {
+        $this->principale = $principale;
     }
 
 

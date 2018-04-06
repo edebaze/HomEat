@@ -38,7 +38,7 @@ class Recipes
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\CategoriesRecipes", cascade={"persist"})
      */
-    private $categories_recipes;
+    private $categories;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Status", cascade={"persist"})
@@ -61,6 +61,15 @@ class Recipes
      * @ORM\Column(type="time")
      */
     private $hour;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $quantity;
+
+
+
+    // ------------------------------------------------- GETTERS & SETTERS
 
     /**
      * @return mixed
@@ -93,11 +102,6 @@ class Recipes
     {
         $this->quantity = $quantity;
     }
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $quantity;
 
 
     public function getCuisto()
@@ -151,17 +155,18 @@ class Recipes
     /**
      * @return mixed
      */
-    public function getCategoriesRecipes()
+    public function getCategories()
     {
-        return $this->categories_recipes;
+        return $this->categories;
     }
 
-    public function setCategoriesRecipes()
+    /**
+     * @param mixed $categories
+     */
+    public function setCategories($categories): void
     {
-        return $this->categories_recipes;
+        $this->categories = $categories;
     }
-
-
 
 
     public function __construct()

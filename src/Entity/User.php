@@ -21,11 +21,6 @@ class User
     /**
      * @ORM\Column(type="string", length=100)
      */
-    //private $pseudo;
-
-    /**
-     * @ORM\Column(type="string", length=100)
-     */
     private $firstname;
 
     /**
@@ -59,9 +54,14 @@ class User
     private $avatar;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\AddressHasUser", mappedBy="user")
+     * @ORM\Column(type="integer")
      */
-    private $addressHasUser;
+    private $xp;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Level", cascade={"persist"})
+     */
+    private $level;
 
 
     /**
@@ -70,12 +70,47 @@ class User
     private $orders;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Roles", inversedBy="user")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Roles", cascade={"persist"})
      */
-    private $roles;
+    private $role;
 
 
 
+
+    // ------------------------------------------------- CONSTRUCT
+
+
+
+    public function __construct()
+    {
+        $this->dateInscription  = new \DateTime();
+        $this->lastConnexion    = new \DateTime();
+    }
+
+
+
+
+
+
+    // ------------------------------------------------- GETTERS & SETTERS
+
+
+
+    /**
+     * @return mixed
+     */
+    public function getLevel()
+    {
+        return $this->level;
+    }
+
+    /**
+     * @param mixed $level
+     */
+    public function setLevel($level): void
+    {
+        $this->level = $level;
+    }
 
     /**
      * @return mixed
@@ -85,31 +120,7 @@ class User
         return $this->orders;
     }
 
-    /**php
-     * @param mixed $orders
-     */
-    public function setOrders (Orders $Orders)
-    {
-        $this->Orders = $Orders;
-        return $this;
-    }
-    /**
-     * @return mixed
-     */
-    public function getAddressHasUser()
-    {
-        return $this->adressHasUser;
-    }
 
-    /**
-     * @param mixed $addressHasUser
-     */
-    public function setaddressHasUser(addressHasUser $addressHasUser)
-    {
-        $this->addressHasUser = $addressHasUser;
-
-        return $this;
-    }
     /**
      * @return mixed
      */
@@ -125,56 +136,6 @@ class User
     {
         $this->avatar = $avatar;
     }
-
-    /**
-     * @return mixed
-     */
-    public function getRecipes()
-    {
-        return $this->recipes;
-    }
-
-
-    public function __construct()
-    {
-        $this->recipes          = new ArrayCollection();
-        $this->dateInscription  = new \DateTime();
-        $this->lastConnexion    = new \DateTime();
-    }
-
-
-    /**
-     * @return mixed
-     */
-    public function getRoles()
-    {
-        return $this->roles;
-    }
-
-    public function addRecipe(Recipe $recipe)
-    {
-        $this->recipes[] = $recipe;
-        return $this;
-    }
-
-
-
-    public function removeRecipe(Recipe $recipe)
-    {
-        $this->recipes->removeElement($recipe);
-    }
-
-
-
-    /**
-     * @param mixed $roles
-     */
-    public function setRoles(Roles $roles)
-    {
-        $this->roles = $roles;
-        return $this;
-    }
-
 
 
 
@@ -279,21 +240,40 @@ class User
         $this->lastConnexion = $lastConnexion;
     }
 
-//    /**
-//     * @return mixed
-//     */
-//    public function getPseudo()
-//    {
-//        return $this->pseudo;
-//    }
-//
-//    /**
-//     * @param mixed $pseudo
-//     */
-//    public function setPseudo($pseudo): void
-//    {
-//        $this->pseudo = $pseudo;
-//    }
+    /**
+     * @return mixed
+     */
+    public function getXp()
+    {
+        return $this->xp;
+    }
+
+    /**
+     * @param mixed $xp
+     */
+    public function setXp($xp): void
+    {
+        $this->xp = $xp;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRole()
+    {
+        return $this->role;
+    }
+
+    /**
+     * @param mixed $role
+     */
+    public function setRole($role): void
+    {
+        $this->role = $role;
+    }
+
+
+
 
 
 }

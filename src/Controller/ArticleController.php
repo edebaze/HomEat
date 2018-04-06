@@ -221,41 +221,6 @@ class ArticleController extends Controller
 
 
 
-                //////////////////////////////////////////////////////////////////
-              // ---------------------------------------------- MODIFIER MDP
-            //////////////////////////////////////////////////////////////////
-
-
-    public function updateAction($id, Request $request)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $user = $em->getRepository('UserBundle:User')->find($id);
-
-        $form = $this->get('form.factory')->create(UserEditType::class, $user);
-
-        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
-            $edit = $request->request->get('user_edit');
-            if ($edit['password'] == "") {
-                $user->setPassword($user->getPassword());
-            } else {
-                $encoder = $this->container->get('security.password_encoder');
-                $newPasswordEncoded = $encoder->encodePassword($user, $edit['password']);
-                $user->setPassword($newPasswordEncoded);
-            }
-            var_dump($edit);
-            $em->flush();
-            //return $this->redirectToRoute('user_homepage', array());
-        }
-        return $this->render('UserBundle:User:update.html.twig', array(
-            'user' => $user,
-            'form' => $form->createView(),
-        ));
-    }
-
-
-
-
     //////////////////////////////////////////////////////////////////
     // ----------------------------------------------------- EDITOR
     //////////////////////////////////////////////////////////////////

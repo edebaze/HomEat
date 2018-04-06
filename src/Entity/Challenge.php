@@ -41,6 +41,21 @@ class Challenge
      */
     private $description;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $max;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $ref;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $sousref;
+
 
 
 
@@ -146,6 +161,56 @@ class Challenge
     {
         $this->xp = $xp;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getMax()
+    {
+        return $this->max;
+    }
+
+    /**
+     * @param mixed $max
+     */
+    public function setMax($max): void
+    {
+        $this->max = $max;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRef()
+    {
+        return $this->ref;
+    }
+
+    /**
+     * @param mixed $ref
+     */
+    public function setRef($ref): void
+    {
+        $this->ref = $ref;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSousref()
+    {
+        return $this->sousref;
+    }
+
+    /**
+     * @param mixed $sousref
+     */
+    public function setSousref($sousref): void
+    {
+        $this->sousref = $sousref;
+    }
+
+
 
 
 }

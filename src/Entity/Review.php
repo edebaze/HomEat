@@ -37,6 +37,11 @@ class Review
     private $destinataire;
 
 
+
+
+
+    // ------------------------------------------------- GETTERS & SETTERS
+
     /**
      * @return mixed
      */

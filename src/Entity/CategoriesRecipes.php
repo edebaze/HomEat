@@ -21,6 +21,9 @@ class CategoriesRecipes
      */
     private $names_categories_recipes;
 
+
+
+
     /**
      * @return mixed
      */
