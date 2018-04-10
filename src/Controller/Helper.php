@@ -8,7 +8,6 @@
 
 namespace App\Controller;
 
-use App\Controller\Helper;
 use App\Entity\CategoriesRecipes;
 use App\Entity\Challenge;
 use App\Entity\Level;
@@ -397,6 +396,9 @@ Trait Helper
         $address->setCity($post['city']);
         $address->setNumber($post['number']);
         $address->setComment($post['comment']);
+        $address->setLat($_COOKIE['lat']);
+        $address->setLng($_COOKIE['lng']);
+        $address->setIp($_COOKIE['ip']);
 
         $this->save($address);
 

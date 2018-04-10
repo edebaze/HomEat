@@ -46,10 +46,6 @@ class Recipes
     private $status;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Ingredients", cascade={"persist"})
-     */
-    private $ingredients;
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", cascade={"persist"})
      */
     private $cuisto;
@@ -130,24 +126,6 @@ class Recipes
         $this->image = $image;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getIngredients()
-    {
-        return $this->ingredients;
-    }
-
-    public function addIngredient(Ingredient $ingredient)
-    {
-        $this->ingredients[] = $ingredient;
-        return $this;
-    }
-
-    public function removeIngredient (Ingredient $ingredient)
-    {
-        $this->ingredients->removeElement($ingredient);
-    }
 
     /**
      * @return mixed
@@ -168,7 +146,6 @@ class Recipes
 
     public function __construct()
     {
-        $this->ingredients          =   new ArrayCollection();
         $this->hour                 =   new \DateTime();
     }
 

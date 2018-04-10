@@ -5,9 +5,11 @@ namespace App\Controller;
 
 
 use App\Controller\Helper;
+use App\Entity\AddressHasUser;
 use App\Entity\Auteur;
 use App\Entity\CategoriesRecipes;
 use App\Entity\Challenge;
+use App\Entity\Review;
 use App\Entity\Orders;
 use App\Entity\Recipes;
 use App\Entity\Roles;
@@ -32,6 +34,16 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class IndexController extends Controller
 {
+
+    /*
+
+    HELPER contient les fonctions utilisées afin
+    de rendre le code plus lisible et aéré
+
+    */
+
+    use Helper;
+
 
     /**
      * Page d'accueil de notre site.
@@ -64,9 +76,6 @@ class IndexController extends Controller
 
 
     // ------------------------------------------------------------
-
-
-
 
 
 
@@ -165,10 +174,15 @@ class IndexController extends Controller
 
 
     public function plats() {
+        # Récupération des  utilisateurs proches
+        $users = $this->getDoctrine()
+            ->getRepository(AddressHasUser::class)
+            ->findNear(100);
+
         # Récupération de la liste de plats
         $plats = $this->getDoctrine()
             ->getRepository(Recipes::class)
-            ->findAll();
+            ->findAllThatMatters($users);
 
         return $this->render('commun/liste-plats.html.twig', [
             "plats"  => $plats
@@ -257,57 +271,6 @@ class IndexController extends Controller
 
             ->getForm();
 
-//        if ($request->isMethod('POST')) {
-//            $form->submit($request->request->get($form->getName()));
-//
-//            # Vérification des données du Formulaire
-//            if ($form->isSubmitted()) :
-//                # Récupération des données
-//                $auteur = $form->getData();
-//
-//                # Récupération de l'image
-//                $image = $auteur->getAvatar();
-//
-//                # Récupération du firstname
-//                $auteur->setFirstname('');
-//
-//                # Sauvegarde du role
-//                $auteur->setRoles($role);
-//
-////            # String Aléatoire
-////            $chaine  = rand(1000000, 99999999);
-////
-////            # Nom du fichier
-////            $fileName = $chaine.'.'.$image->guessExtension();
-////
-////            dump($this);
-////            //die();
-////
-////            $image->move(
-////                $this->getParameter('avatars'),
-////                $fileName
-////            );
-//
-//                $auteur->setAvatar('images/avatars/default_avatar.jpg');
-//
-//                dump($auteur);
-//                die();
-//
-//                # Insertion en BDD
-//                $em = $this->getDoctrine()->getManager();
-//                $em->persist($auteur);
-//                $em->flush();
-//
-//                # Récupération des variables de session
-//                if(!isset($session)) {$session = new Session();}
-//
-//                $session->set('userName', $auteur->getFirstname() . ' ' . $auteur->getName());
-//                $session->set('userId',$auteur->getId());
-//                $session->set('template','template-01');
-//
-//            endif;
-//        }
-
         # Affichage du Formulaire dans la Vue
         return $this->render('components/_inscription.html.twig', [
             'form' => $form->createView()
@@ -329,6 +292,7 @@ class IndexController extends Controller
     public function filtreAccueil() {
         return $this->render('components/_filtre-accueil.html.twig', []);
     }
+
 
 
 

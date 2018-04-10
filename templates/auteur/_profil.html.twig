@@ -1,0 +1,56 @@
+
+    <div class="col s12 m12" style="padding-bottom: 40px;">
+
+
+        <br>
+
+        <div class="col s12">
+            <a href=""><p>{{ auteur.mail }}</p></a>
+
+            <hr>
+        </div>
+
+        <div class="col s12">
+            <a href=""><p>Modifier le mot de passe</p></a>
+
+            <hr>
+        </div>
+
+
+        <div class="col s12">
+            <p>Ici vous pouvez trouver la note</p>
+
+            <hr>
+        </div>
+
+        <div class="col s12">
+            <p>
+                {#               Changement de Theme                #}
+            <form action="{{ url('personnalisation') }}" method="POST" class="form-template">
+                <select class="select-template" name="template">
+                    <option value="template-01">Blue & White</option>
+                    <option value="template-02">Dark & Grey</option>
+                    <option value="template-03">Purple & Camel</option>
+                </select>
+
+                <input type="submit" id="submit-template">
+            </form>
+            </p>
+
+            <hr>
+        </div>
+
+
+        <div class="col s12">
+            <p>ici vous pouvez trouver une bio écrite par l'auteur</p>
+
+            <hr>
+        </div>
+
+
+
+
+
+
+    </div>
+</div>

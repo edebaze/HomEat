@@ -129,5 +129,10 @@
     <script src="{{ asset('js/index/auteur.js') }}"></script>
     <script src="{{ asset('js/index/paypal.js') }}"></script>
 
+    <-- GEOLOC -->
+    {% if(app.request.cookies.get('ip') is not defined) %}
+        <script src="{{ asset('js/index/geoloc.js') }}"></script>
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDgncS4rwdSr_OB9ak6sVLeGn9e6--vQks&callback=initMap"></script>
+    {% endif %}
     {# --------------------------------------------------------------------------------- #}
 {% endblock %}

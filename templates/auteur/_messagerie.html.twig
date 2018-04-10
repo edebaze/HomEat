@@ -1,0 +1,43 @@
+
+    <div class="col s12 m6" id="right-panel-message">
+
+        <div class="col s12" style="background-color: rgba(128,128,128,0.05); margin-top:10px; overflow: auto; max-height:500px;" id="review-container">
+            {% for review in reviews %}
+                {% if review.user.id == app.session.get('userId') %}
+                    {% set class = 'auteur-message' %}
+                {% else %}
+                    {% set class = 'other-message' %}
+                {% endif %}
+                <div class="container">
+                    <div class="col s12 z-depth-2 un-commentaire {{ class }}" style="margin: 5px;">
+                        <span><img style="width: 15%; padding: 5px;" src="{{ asset(review.user.avatar) }}" class="circle img-responsive" alt="photo de profil commentaire"> <em> {{ review.user.name }} </em></span>
+                        <p>{{ review.comments }}</p>
+                        <p>Note : {{ review.notes }}/5</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <form class="col s12" method="post" action="{{ url("sendReview", { user1 :  app.session.get('userId')}) }}" id="form-review">
+            <div class="row">
+                <div class="input-field col s12 valign-wrapper">
+                    <i class="material-icons prefix">mode_edit</i>
+                    <textarea name="comments" id="icon_prefix2" class="materialize-textarea" data-length="140" maxlength="140"></textarea>
+                    <label for="icon_prefix2">Votre commentaire</label>
+
+                    <button type="submit" class="btn-floating btn waves-effect waves-light" id="submit-form-review"> <i class="material-icons">send</i>
+                    </button>
+                </div>
+
+
+            </div>
+            <div class="row">
+                <div class="col s12">
+                    Mettez une note au cuisto
+                    <div class="input-field inline">
+                        <input id="note" name="notes" placeholder="Note..." type="number">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>

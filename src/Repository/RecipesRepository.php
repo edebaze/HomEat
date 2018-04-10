@@ -22,29 +22,35 @@ class RecipesRepository extends ServiceEntityRepository
 //    /**
 //     * @return Recipes[] Returns an array of Recipes objects
 //     */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('r')
-            ->andWhere('r.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('r.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Recipes
+    public function findByUser($user)
     {
-        return $this->createQueryBuilder('r')
-            ->andWhere('r.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+
+            return $this->createQueryBuilder('a')
+                ->where('a.cuisto = :cuisto')->setParameter('cuisto', $user)
+                ->orderBy('a.id', 'DESC')
+                ->getQuery()
+                ->getResult();
+
     }
-    */
+
+
+    public function findAllThatMatters($users)
+    {
+        $plats = [];
+
+        foreach ($users as $user) {
+            $plats = $this->createQueryBuilder('a')
+                ->where('a.status = :status')->setParameter('status', 2)
+                ->andWhere('a.cuisto = :cuisto')->setParameter('cuisto', $user)
+                ->orderBy('a.id', 'DESC')
+                ->getQuery()
+                ->getResult();
+        }
+
+        return $plats;
+
+    }
+
+
 }

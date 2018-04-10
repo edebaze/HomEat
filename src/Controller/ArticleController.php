@@ -171,7 +171,9 @@ class ArticleController extends Controller
         $categorie = $this->getDoctrine()
             ->getRepository(CategoriesRecipes::class)
             ->find(1);
-
+        $status = $this->getDoctrine()
+            ->getRepository(Status::class)
+            ->find(2);
 
         $form = $this->formEditor()
             ->handleRequest($request);
@@ -183,6 +185,7 @@ class ArticleController extends Controller
 
             $recette->setCategories($categorie);
             $recette->setCuisto($auteur);
+            $recette->setStatus($status);
 
             ($recette->getImage() == null) ? $recette->setImage('images/recettes/default.jpg') : $this->saveImage($recette);
 
@@ -275,18 +278,38 @@ class ArticleController extends Controller
 
     public function auteur($id) {
 
+        // ----------------------------------------- Auteur
         $auteur = $this->getDoctrine()
             ->getRepository(User::class)
             ->find($id);
 
-        # Récupération des messages liés à l'auteur
+
+        // ----------------------------------------- Orders & Ventes
+        $repository = $this->getDoctrine()
+            ->getRepository(Orders::class);
+
+        $orders = $repository->findByUser($auteur);
+
+        $recipes = $this->getDoctrine()
+            ->getRepository(Recipes::class)
+            ->findByUser($auteur);
+
+        $ventes = $repository->findByRecipes($recipes);
+
+        // ----------------------------------------- Messages
         $reviews = $this->getDoctrine()
             ->getRepository(Review::class)
-            ->findByUser($id);
+            ->findByUser($auteur);
 
-        return $this->render('commun/affiche-auteur.html.twig', [
+
+
+                        # Redirection
+
+        return $this->render('auteur/affiche-auteur.html.twig', [
             'auteur'    => $auteur,
-            'reviews'  => $reviews
+            'orders'    => $orders,
+            'ventes'    => $ventes,
+            'reviews'   => $reviews,
         ]);
     }
 
@@ -343,15 +366,8 @@ class ArticleController extends Controller
      */
 
 
-    public function addressSave(Request $request)
+    public function addressSave()
     {
-
-        //////Ajout d'une adresse en BDD/////
-
-        // On crée une nouvelle address
-        $address = new Address();
-
-
         # Vérification des données du Formulaire
         if (isset($_POST)) :
 
@@ -563,6 +579,86 @@ class ArticleController extends Controller
 
 
 
+
+    //////////////////////////////////////////////////////////////////
+    // ------------------------------------------- cancelOrder
+    //////////////////////////////////////////////////////////////////
+
+
+    /**
+     * Supprimer une commande
+     * @Route("/cancelorder/{id}",
+     *     name="cancelorder",
+     *     requirements={"id" = "\d+"},
+     *     methods={"GET", "POST"})
+     * @param integer $id
+     * @return Response
+     */
+
+    public function cancelorder($id) {
+
+        $order = $this->getDoctrine()
+            ->getRepository(Orders::class)
+            ->find($id);
+
+        $recipes =  $order->getRecipes();
+
+        $order->setCancel(true);
+        $recipes->setQuantity($recipes->getQuantity() + $order->getQuantities());
+
+        if($recipes->getStatus()->getId() == 2) {
+            $status = $this->getDoctrine()
+                ->getRepository(Status::class)
+                ->find(1);
+
+            $recipes->setStatus($status);
+        }
+
+        $this->save($order);
+        $this->save($recipes);
+
+        # Affichage de la Vue
+        return $this->redirect('http://localhost:8000/auteur/'.$this->getThisUser()->getId());
+    }
+
+
+
+    //////////////////////////////////////////////////////////////////
+    // ---------------------------------------------------- geoloc
+    //////////////////////////////////////////////////////////////////
+
+
+    /**
+     * Paramètre
+     * @Route("/geoloc", name="geoloc")
+     */
+
+
+    public function geoloc()
+    {
+
+        include(__DIR__ . "/geoloc/geoipcity.inc");
+
+        $gi = geoip_open(realpath(__DIR__ . "/geoloc/GeoLiteCity.dat"),GEOIP_STANDARD);
+
+        $record = geoip_record_by_addr($gi,$_POST['ip']);
+
+        $la = $record->latitude;
+        $lo = $record->longitude;
+
+        $coordonnees = array('lat' => $la, 'lng' => $lo);
+
+        setcookie('lat', $la);
+        setcookie('lng', $lo);
+        setcookie('ip', $_POST['ip']);
+
+        echo json_encode($coordonnees);
+
+
+        geoip_close($gi);
+
+        return $this->redirectToRoute('index');
+    }
 
 
 
