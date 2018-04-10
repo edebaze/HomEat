@@ -17,6 +17,7 @@
 
                                         {#       CONTENU       #}
 
+    {% dump(address) %}
 
     {% set address = address[0].address %}
     {% set price = order.recipes.price * order.quantities %}

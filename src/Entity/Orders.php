@@ -19,11 +19,6 @@ class Orders
 
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Status", inversedBy="orders")
-     */
-    private $status;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Recipes", cascade={"persist"})
      */
     private $recipes;
@@ -95,23 +90,6 @@ class Orders
     public function setRecipes(Recipes $recipes)
     {
         $this->recipes = $recipes;
-        return $this;
-    }
-
-
-
-    /**
-     * @return mixed
-     */
-    public function getStatus()
-    {
-        return $this->status;
-    }
-
-
-    public function setStatus(Status $status)
-    {
-        $this->status = $status;
         return $this;
     }
 

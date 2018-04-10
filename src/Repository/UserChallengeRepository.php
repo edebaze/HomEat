@@ -33,14 +33,14 @@ class UserChallengeRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function save($auteur,$challenge) {
-        $this->setUser($auteur);
-        $this->setChallenge($challenge);
-        $this->setAccomplissement(0.0);
-
-        # Insertion en BDD
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($this);
-        $em->flush();
+    public function findThisOne($user, $challenge)
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.user = :user')->setParameter('user', $user)
+            ->andWhere('a.challenge = :challenge')->setParameter('challenge', $challenge)
+            ->orderBy('a.id', 'DESC')
+            ->getQuery()
+            ->getResult()[0];
     }
+
 }

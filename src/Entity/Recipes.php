@@ -53,11 +53,8 @@ class Recipes
      * @ORM\ManyToOne(targetEntity="App\Entity\User", cascade={"persist"})
      */
     private $cuisto;
+
     /**
-     * @return mixed
-     */
-    /**
-     * @return mixed
      * @ORM\Column(type="time")
      */
     private $hour;

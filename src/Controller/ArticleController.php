@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Controller\Helper;
 use App\Entity\CategoriesRecipes;
 use App\Entity\Challenge;
+use App\Entity\Level;
 use App\Entity\Orders;
 use App\Entity\Recipes;
 use App\Entity\Review;
@@ -35,6 +36,12 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class ArticleController extends Controller
 {
+    /*
+
+    HELPER contient les fonctions utilisées afin
+    de rendre le code plus lisible et aéré
+
+    */
 
     use Helper;
 
@@ -52,69 +59,17 @@ class ArticleController extends Controller
 
     public function signin() {
 
-
-        // ------------------------------------ Auteur
-
-        # Création d'un nouvel utilisateur
-        $auteur = new User();
-
-        # Récupération du role
-        $role = $this->getDoctrine()
-            ->getRepository(Roles::class)
-            ->find(2);
-
         # Vérification des données du Formulaire
-        if (true) :
+        if (isset($_POST['form'])) :
 
             $form = $_POST['form'];
 
-            # Récupération des données
-            $auteur->setMail($form['mail']);
-            $auteur->setName($form['name']);
-            $auteur->setPass($form['pass']);
-            $auteur->setRoles($role);
+            $auteur = $this->newAuteur($form);
 
-            $auteur->setAvatar('images/avatars/default_avatar.jpg');
-            $auteur->setFirstname('');
+            $this->save($auteur);
+            $this->initiateSession($auteur);
 
-
-            # Récupération des variables de session
-            $session = new Session();
-
-            $session->set('userName', $auteur->getFirstname() . ' ' . $auteur->getName());
-            $session->set('userId', $auteur->getId());
-            $session->set('template', 'template-01');
-
-            # Insertion en BDD
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($auteur);
-            $em->flush();
-
-
-            // ------------------------------------ UserChallenge
-
-            # Récupération des challenges
-            $challenges = $this->getDoctrine()
-                ->getRepository(Challenge::class)
-                ->findAll();
-
-            foreach ($challenges as $challenge) {
-                # Création d'un nouvel userChallenge
-                $userChallenge = new UserChallenge();
-
-                $userChallenge->setUser($auteur);
-                $userChallenge->setChallenge($challenge);
-                $userChallenge->setAccomplissement(0.0);
-                $userChallenge->setUsed(false);
-
-                # Insertion en BDD
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($userChallenge);
-                $em->flush();
-            }
-
-
-
+            $this->newUserChallenge($auteur);
         endif;
 
         return $this->redirectToRoute('index');
@@ -135,11 +90,6 @@ class ArticleController extends Controller
 
     public function login() {
 
-            # Initialisation de la variable $message
-            $message = '';
-
-            dump($_POST);
-
             $repository = $this->getDoctrine()
                 ->getRepository(User::class);
 
@@ -149,30 +99,11 @@ class ArticleController extends Controller
                 $error = $repository->loginUser($_POST['mail'], $_POST['pass']);
 
                 if(!empty($error[0])) :
-                    $session = $repository->openSession($error[0][0]);
-
-                    $user = $this->getDoctrine()
-                        ->getRepository(User::class)
-                        ->find($session->get('userId'));
+                    $user = $this->getThisUser();
 
                     $recettes = $this->getDoctrine()
                         ->getRepository(Recipes::class)
                         ->findAll();
-
-                    // ------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-                                                            // ------------------------------------------//
-                                                            //              ENVOIE DU MAIL               //
-                                                            // ------------------------------------------//
-
-
-
-
-
-
-
-                    // ------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 
                     # Redirection
                     return $this->redirectToRoute('index', [
@@ -235,181 +166,27 @@ class ArticleController extends Controller
 
     public function editor(Request $request) {
 
-        // INITIALISATION RECETTE
-
-        # Initialisation de la variable $message
-        $message = '';
-
-        # Création d'une nouvelle recette
-        $recette = new Recipes();
-
-
-
-        ############ # Récupération de l'auteur # ############
-
-        $session = $this->get('session');
-
-        # Récupération de l'ID de l'auteur
-        $auteurId = $session->get('userId');
-
-        # Recherche de l'Auteur de la recette
-        $auteur = $this->getDoctrine()
-            ->getRepository(User::class)
-            ->find($auteurId);
-
-        # Récupération de l'auteur
-        $recette->setCuisto($auteur);
-
-
-
-        ############ # Récupération de la categorie # ############
-
-        $categories = $this->getDoctrine()
+        // Récupération des variables
+        $auteur = $this->getThisUser();
+        $categorie = $this->getDoctrine()
             ->getRepository(CategoriesRecipes::class)
-            ->findAll();
+            ->find(1);
 
 
-        //-------------------- FORMULAIRE --------------------------//
-
-        # Créer le formuaire permettant l'ajout d'une recette
-        $form = $this->createFormBuilder($recette)
-
-            ->add('titre', TextType::class, [
-                'required'      => true,
-                'label'         => false,
-                'attr'          => [
-                    'placeholder'   => 'Titre de votre recette...',
-                    'class'         => 'form-control'
-                ]
-            ])
-
-            ->add('description', TextType::class, [
-                'required'      => true,
-                'label'         => false,
-                'attr'          => [
-                    'placeholder'   => 'Description',
-                    'class'         => 'form-control'
-                ]
-            ])
-
-//            ->add('categories_recipes', ChoiceType::class, [
-//                'choices' => [
-//                    $categories[0]->getNamesCategoriesRecipes() => $categories[0]->getId(),
-//                    $categories[1]->getNamesCategoriesRecipes() => $categories[1]->getId(),
-//                    $categories[2]->getNamesCategoriesRecipes() => $categories[2]->getId(),
-//                    $categories[3]->getNamesCategoriesRecipes() => $categories[3]->getId(),
-//                ],
-//                'required'  => true,
-//                'label'     => false,
-//                'attr'      =>  [
-//                    'class' => 'form-control'
-//                ]
-//            ])
-
-            ->add('image', FileType::class, [
-                'required'  => false,
-                'label'     => false,
-                'data_class' => null,
-                'attr'          => [
-                    'class'         => 'form-control'
-                ]
-            ])
-
-            ->add('price', MoneyType::class, [
-                'required'      => false,
-                'currency'      => 'EUR',
-                'label'         => false,
-                'empty_data'    => 'Price',
-                'attr'          => [
-                    'placeholder'   => 'Prix € ',
-                    'class'         => ''
-                ]
-            ])
-
-            ->add('quantity', IntegerType::class, [
-                'required'      => false,
-
-                'label'         => false,
-                'empty_data'    => 1,
-                'attr'          => [
-                    'placeholder'   => 'quantité',
-                    'class'         => ''
-                ]
-            ])
-
-            ->add('hour', TimeType::class, array(
-                'input'  => 'datetime',
-                'widget' => 'choice',
-                'attr'          => [
-                    'placeholder'   => 'Plage horraire...',
-                    'class'         => ''
-                ]
-            ))
-
-
-            ->add('submit', SubmitType::class, [
-                'label'         => false,
-                'attr'          => [
-                    'class'         => 'btn btn-primary'
-                ]
-            ])
-
-            ->getForm();
-
-
-        # Traitement des données POST
-        $form->handleRequest($request);
-
-
+        $form = $this->formEditor()
+            ->handleRequest($request);
 
         # Vérification des données du Formulaire
         if ($form->isSubmitted()) :
 
-            # Récupération des données
             $recette = $form->getData();
 
-            $categorie = $this->getDoctrine()
-                ->getRepository(CategoriesRecipes::class)
-                ->find(3);
+            $recette->setCategories($categorie);
+            $recette->setCuisto($auteur);
 
-            $recette->setCategoriesRecipes($categorie);
+            ($recette->getImage() == null) ? $recette->setImage('images/recettes/default.jpg') : $this->saveImage($recette);
 
-            dump($recette);
-            //die();
-
-            if($recette->getImage() == null) :
-                $recette->setImage('images/recettes/default.jpg');
-            else :
-                # Récupération de l'image
-                $image = $recette->getImage();
-
-                # String Aléatoire
-                $chaine  = rand(1000000, 99999999);
-
-                # Nom du fichier
-                $fileName = $chaine.'.'.$image->guessExtension();
-
-                dump($this);
-                //die();
-
-                $image->move(
-                    $this->getParameter('recettes'),
-                    $fileName
-                );
-
-                $recette->setImage('images/recettes/' . $fileName);
-            endif;
-
-
-            dump($recette);
-            //die();
-
-
-            # Insertion en BDD
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($recette);
-            $em->flush();
-
+            $this->save($recette);
 
             # Redirection vers l'index
             return $this->redirectToRoute('index');
@@ -420,7 +197,6 @@ class ArticleController extends Controller
         # Affichage du Formulaire dans la Vue
         return $this->render('commun/editor.html.twig', [
             'form'      => $form->createView(),
-            'message'   => $message
         ]);
     }
 
@@ -508,10 +284,6 @@ class ArticleController extends Controller
             ->getRepository(Review::class)
             ->findByUser($id);
 
-//        $reviews = $this->getDoctrine()
-//            ->getRepository(Review::class)
-//            ->findByAuteur($id);
-
         return $this->render('commun/affiche-auteur.html.twig', [
             'auteur'    => $auteur,
             'reviews'  => $reviews
@@ -535,27 +307,7 @@ class ArticleController extends Controller
     public function params(Request $request)
     {
 
-        //////Ajout d'une adresse en BDD/////
-
-        // On crée une nouvelle address
-        $address = new Address();
-
-        # Créer le formuaire permettant l'ajout d'un utilisateur
-        $formBuilder = $this->createFormBuilder($address);
-
-        // On ajoute les champs de l'entité que l'on veut à notre formulaire
-        $formBuilder
-            ->add('street', TextType::class)
-            ->add('zip_code', IntegerType::class)
-            ->add('city', TextType::class)
-            ->add('number', IntegerType::class)
-            ->add('comment', TextType::class)
-            ->add('save', SubmitType::class);
-        // Pour l'instant, pas de candidatures, catégories, etc., on les gérera plus tard
-
-        // À partir du formBuilder, on génère le formulaire
-        $form = $formBuilder->getForm();
-
+        $form = $this->formAddress();
 
         # Traitement des données POST
         $form->handleRequest($request);
@@ -566,28 +318,14 @@ class ArticleController extends Controller
             # Récupération des données
             $address = $form->getData();
 
-            dump($this);
-            //die();
-
-            # Insertion en BDD
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($address);
-            $em->flush();
-
+            $this->save($address);
 
             # Redirection vers l'index
-            return $this->render('index/index.html.twig', []);
-        else :
-            # Affichage de la Vue
-            return $this->render('user/params.html.twig', [
-                'form' => $form->createView(),
-                'test'=> true,
-            ]);
+            return $this->redirectToRoute('index');
         endif;
 
         return $this->render('user/params.html.twig',[
-            'form' => $form->createView(),
-            'test'=> true,
+            'form' => $form->createView()
         ]);
     }
 
@@ -615,38 +353,17 @@ class ArticleController extends Controller
 
 
         # Vérification des données du Formulaire
-        if (true) :
+        if (isset($_POST)) :
 
-            dump($_POST);
-
-            # Récupération des données
-            $address->setStreet($_POST['form']['street']);
-            $address->setZipCode($_POST['form']['zip_code']);
-            $address->setCity($_POST['form']['city']);
-            $address->setNumber($_POST['form']['number']);
-            $address->setComment($_POST['form']['comment']);
-
-
-            # Insertion en BDD
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($address);
-            $em->flush();
-
+            $post = $_POST['form'];
+            $this->setAddress($post);
 
             # Redirection vers l'index
             return $this->render('index/index.html.twig', []);
-        else :
-            # Affichage de la Vue
-            return $this->render('user/params.html.twig', [
-                'form' => $form->createView(),
-                'test'=> true,
-            ]);
+
         endif;
 
-        return $this->render('user/params.html.twig',[
-            'form' => $form->createView(),
-            'test'=> true,
-        ]);
+        return $this->render('user/params.html.twig');
     }
 
 
@@ -674,13 +391,7 @@ class ArticleController extends Controller
     {
         $review = new Review();
 
-        # Récupération des variables de session
-        $session = $this->get('session');
-
-        // On récupère nos deux utilisateurs
-        $emissaire = $this->getDoctrine()
-            ->getRepository(User::class)
-            ->find($session->get('userId'));
+        $emissaire = $this->getThisUser();
 
         $destinataire = $this->getDoctrine()
             ->getRepository(User::class)
@@ -688,26 +399,6 @@ class ArticleController extends Controller
 
         $review->setUser($emissaire);
         $review->setDestinataire($destinataire);
-
-
-//        $formBuilder = $this->createFormBuilder($review);
-//
-//        //
-//        $formBuilder
-//            ->add('comments', TextType::class)
-//            ->add('notes', IntegerType::class);
-//
-//        // Pour l'instant, pas de candidatures, catégories, etc., on les gérera plus tard
-//
-//        // À partir du formBuilder, on génère le formulaire
-//        $form = $formBuilder->getForm();
-
-        dump($_POST);
-        //die();
-
-
-
-        # Récupération des données
 
         if(isset($_POST['notes'])) {
             $review->setNotes($_POST['notes']);
@@ -717,27 +408,21 @@ class ArticleController extends Controller
             $review->setComments($_POST['comments']);
         }
 
-        // Fin de form
 
-        # Insertion en BDD
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($review);
-        $em->flush();
+        # CHALLENGE ref 1
 
-        // Récupération de tous les reviews
-        $reviews = $this->getDoctrine()
-            ->getRepository(Review::class)
-            ->findByUser($user1);
+        if($review->getNotes() == 5) {
+            $challenges = $this->getDoctrine()
+                ->getRepository(Challenge::class)
+                ->findByRef(1);
 
-        // Validation
+            $this->setUserChallenge($destinataire, $challenges);
+        }
+
+        $this->save($review);
 
         # Redirection vers l'index
-        return $this->redirectToRoute('index',[
-//            'auteur'    => $emissaire,
-//            'reviews'   => $reviews,
-        ]);
-
-
+        return $this->redirectToRoute('index');
 
     }
 
@@ -757,11 +442,6 @@ class ArticleController extends Controller
         $message = (new \Swift_Message(''))
             ->setFrom('me@example.com')
             ->setTo('alallah@gmail.com')
-
-
-
-
-
             ->setBody(
                 $this->renderView('emails/registration.html.twig',['name'=>'Ducon']
                 ));
@@ -790,75 +470,31 @@ class ArticleController extends Controller
     public function order($id)
     {
 
-            // ----------------------------------------- RECETTE
+            // ----------------------------------------- RECEPIES
 
         $recette = $this->getDoctrine()
             ->getRepository(Recipes::class)
             ->find($id);
-
-        $cuisto = $recette->getCuisto();
-
-
-
-        // ***************************************************
-
-        // Récupération du status de la recette
-        $status = $this->getDoctrine()
-            ->getRepository(Status::class);
-
-        $recette->setStatus($status->find(1));
-
-//        if (($recette->getQuantity() - $_POST['quantity']) <= 0) :
-//            $recette->setStatus($status->find(2));
-//            $recette->setQuantity(0);
-//        else :
-//            $recette->setStatus($status->find(1));
-//            $recette->setQuantity($recette->getQuantity() - $_POST['quantity']);
-//        endif;
-
-        // ***************************************************
-
 
 
             // ----------------------------------------- ADDRESS
 
         $address = $this->getDoctrine()
             ->getRepository(AddressHasUser::class)
-            ->findByUser($cuisto);
+            ->findByUser($recette->getCuisto());
 
-
-
-            // ----------------------------------------- USER
-
-        $session = $this->get('session');
-
-        $user = $this->getDoctrine()
-            ->getRepository(User::class)
-            ->find($session->get('userId'));
 
             // ----------------------------------------- ORDER
 
-        // Création d'une nouvelle order
-        $order = new Orders();
-
-        // Modification de order
-        $order->setRecipes($recette);
-        $order->setUser($user);
-        $order->setQuantities($_POST['quantity']);
-        $order->setStatus($recette->getStatus());
-
+        $order = $this->setOrder($recette);
 
 
             // ----------------------------------------- BDD
 
-        // SAUVEGARDE BDD
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($recette);
-        $em->persist($order);
-        $em->flush();
+        $this->save($order);
 
 
-            // ----------------------------------------- Redirection
+                            # Redirection
 
         return $this->render('user/order.html.twig', [
             'order'     => $order,
@@ -895,29 +531,18 @@ class ArticleController extends Controller
 
 
         // ----------------------------------------- USER
-        $session = $this->get('session');
-
-        $user = $this->getDoctrine()
-            ->getRepository(User::class)
-            ->find($session->get('userId'));
-
-        $user->setAvatar($challenge->getRecompense());
+        $user = $this->getThisUser();
+        $user->setAvatar($challenge->getImage());
 
 
         // ----------------------------------------- BDD
 
-        // SAUVEGARDE BDD
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($user);
-        $em->flush();
+        $this->save($user);
 
 
-//        $reviews = $this->getDoctrine()
-//            ->getRepository(Review::class)
-//            ->findByAuteur($id);
-
-        return $this->redirectToRoute('index', []);
+        return $this->redirectToRoute('index');
     }
+
 
 
     //////////////////////////////////////////////////////////////////
@@ -935,6 +560,10 @@ class ArticleController extends Controller
         # Affichage de la Vue
         return $this->render('commun/notrehistoire.html.twig', []);
     }
+
+
+
+
 
 
 }
